@@ -15,17 +15,6 @@ function htmlEscape(str) {
     });
 }
 
-function download(str, fileName) {
-    var file = new Blob([str]);
-    var a = document.createElement('a');
-    a.href = window.URL.createObjectURL(file);
-    a.download = fileName;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-}
-
 function loadTemplate(callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', chrome.runtime.getURL('template.html'), true);
@@ -84,7 +73,9 @@ chrome.management.getAll(function(extensions) {
            .replace('{COMMENT_ENABLED}', commentEnabled.trim())
            .replace('{COMMENT_DISABLED}', commentDisabled.trim());
 
-        download(template, 'extensions.html');
+        document.open();
+        document.write(template);
+        document.close();
     });
 });
 
